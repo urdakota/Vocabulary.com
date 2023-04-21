@@ -1,4 +1,3 @@
-javascript: 
 async function getName(authToken) {    
   const response = await fetch('https://api.blooket.com/api/users/verify-token?token=JWT+%27 + authToken);    
   const data = await response.json();    
