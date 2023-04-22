@@ -1,4 +1,4 @@
-const delay = prompt("Delay per answer (MS)", 2500);
+const delay = prompt("Delay between loops (MS)", 2500);
 const autorestart = confirm("Want the bot to automatically restart?")
 
 let list = window.location.href.split("/")[4]
@@ -49,8 +49,13 @@ function main() {
                             realquestion = questionContent.children[0].innerText
                         }
 
-                        if (learned[list][realquestion]) {
-                            let done = false;
+                        var containsanswer = false;
+                        choices.querySelectorAll("a").forEach(element => {
+                            if (learned[list][realquestion] == element.innerText) {
+                                containsanswer = true;
+                            }
+                        })
+                        if (learned[list][realquestion] && containsanswer) {
                             choices.querySelectorAll("a").forEach(element => {
                                 if (learned[list][realquestion] == element.innerText) {
                                     element.click();
@@ -163,13 +168,15 @@ function main() {
         if (next.getAttribute("class") == "next active" && !isrunning) {
             next.click();
             setTimeout(() => {
-                main();
-                isrunning = true; 
+                if (!isrunning) {
+                    main();
+                    isrunning = true;
+                }
             }, delay);
         }
         setTimeout(() => {
             next_btn();
-        }, 1000);
+        }, 500);
     }
     next_btn();
 
