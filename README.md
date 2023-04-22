@@ -7,6 +7,8 @@ This is a project i made for fun because im too lazy to do my vocab
 > *This can get your account **RESTRICTED** or **BANNED** if you set the delay too small*
 > Id recommend around *2.5 seconds* in delay **(2500 MS)**
 
+![](auto.gif)
+
 ## HOW TO RUN
 Make a new bookmark with this as the link & click it on your vocabulary.com practice
 ```JS
