@@ -4,8 +4,8 @@ Automatic Vocabulary.com mastery bookmarklet
 This is a project i made for fun because im too lazy to do my vocab
 
 ## WARNING
-*This can get your account **RESTRICTED** or **BANNED** if you set the delay too small*
- use **1500 MS** *1.5 seconds* or more in delay 
+> *This can get your account **RESTRICTED** or **BANNED** if you set the delay too small* \
+> use **1500 MS** *1.5 seconds* or more in delay 
 
 ![](auto.gif)
 
