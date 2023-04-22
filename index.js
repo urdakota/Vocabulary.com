@@ -46,7 +46,7 @@ function main() {
                                     element.click();
                                     setTimeout(() => {
                                         if (element.getAttribute("class") == "correct") {
-                                            learned.delete(realquestion);
+                                            delete learned[realquestion];
                                             localStorage.setItem("learned",JSON.stringify(learned))
                                             isrunning = false;
                                         }
@@ -98,7 +98,7 @@ function main() {
                                 element.click();
                                 setTimeout(() => {
                                     if (element.getAttribute("class") == "correct") {
-                                        learned.delete(realquestion);
+                                        delete learned[realquestion];
                                         localStorage.setItem("learned",JSON.stringify(learned))
                                         isrunning = false;
                                     }
