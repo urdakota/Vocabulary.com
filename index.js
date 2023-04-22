@@ -1,4 +1,4 @@
-const delay = prompt("Delay per answer (MS)",5000);
+const delay = prompt("Delay per answer (MS)",2500);
 var questions = {}
 
 function sleep (time) {
@@ -39,6 +39,7 @@ function main() {
             question.querySelector("div.spelltheword > div.field.left > input").value = word;
             setTimeout(() => {
                 question.querySelector("div.spelltheword > div.field.right > button.spellit.ss-write.left").click();
+                isrunning = false;
             }, delay);
             break;
         case "choices":
@@ -62,7 +63,7 @@ function main() {
                                 isrunning = false;
                             }
                             clicked = false;
-                        }, 2000);
+                        }, 1000);
                     }
                 });
             } else {
@@ -90,12 +91,12 @@ function main() {
                                                 isrunning = false;
                                             }
                                             clicked = false;
-                                        }, 2000);
+                                        }, 1000);
                                     }
                                 }
                             }
                         }
-                        setTimeout(clickbtn(element), 5000);
+                        setTimeout(clickbtn(element), 2000);
                     });
                 }, 1000);
             }
