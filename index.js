@@ -8,7 +8,7 @@ function main() {
     var lifelines = document.querySelector("#challenge > div > div.questionPane > div > div > div > section.left > div.question.typeP > div.lifeLines");
     var lifeline = document.querySelector("#challenge > div > div.questionPane > div > div > div > section.left > div.question.typeP > div.lifeLineContent");
 
-    if (mode.querySelector("assessment").textContent == "ASSESSMENT") {
+    if (mode.querySelector("assessment").innerHTML == '<span class="assessment">ASSESSMENT</span>') {
         alert("ASSESSMENT!")
     }
 }
