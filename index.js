@@ -12,6 +12,7 @@ if (!learned[list]) {
     learned[list] = {};
     localStorage.setItem("learned",JSON.stringify(learned))
 }
+
 var isrunning = false;
 function main() {
     
@@ -84,7 +85,7 @@ function main() {
                                                     element.click();
                                                     setTimeout(() => {
                                                         if (element.getAttribute("class") == "correct") {
-                                                            console.log(`${element.innerText}: ${realquestion}`)
+                                                            console.log(`${realquestion} (${element.innerText})`)
                                                             if (choices.getElementsByClassName("incorrect").length != 0) {
                                                                 learned[list][realquestion] = element.innerText;
                                                                 localStorage.setItem("learned", JSON.stringify(learned))
@@ -132,7 +133,7 @@ function main() {
                                                     element.click();
                                                     setTimeout(() => {
                                                         if (element.getAttribute("class") == "correct") {
-                                                            console.log(`${element.innerText}: ${element.getAttribute("style")}`)
+                                                            console.log(`${element.innerText} (${element.getAttribute("style")})`)
                                                             if (choices.getElementsByClassName("incorrect").length != 0) {
                                                                 learned[list][element.getAttribute("style")] = element.innerText;
                                                                 localStorage.setItem("learned", JSON.stringify(learned))
