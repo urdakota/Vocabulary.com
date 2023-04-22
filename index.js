@@ -1,5 +1,6 @@
 const delay = prompt("Delay per answer (MS)",2500);
-var questions = {}
+var learned = {}
+if (localStorage.getItem("learned") !== null) { learned = JSON.parse(localStorage.getItem("learned")) }
 
 var isrunning = false;
 function main() {
@@ -37,9 +38,9 @@ function main() {
                             realquestion = questionContent.children[0].innerText
                         }
 
-                        if (questions[realquestion]) {
+                        if (learned[realquestion]) {
                             choices.querySelectorAll("a").forEach(element => {
-                                if (questions[realquestion] == element.innerText) {
+                                if (learned[realquestion] == element.innerText) {
                                     element.click();
                                     setTimeout(() => {
                                         if (element.getAttribute("class") == "correct") {
@@ -69,8 +70,9 @@ function main() {
                                                     element.click();
                                                     setTimeout(() => {
                                                         if (element.getAttribute("class") == "correct") {
-                                                            questions[realquestion] = element.innerText;
+                                                            learned[realquestion] = element.innerText;
                                                             console.log(`${element.innerText}: ${realquestion}`)
+                                                            localStorage.setItem("learned",JSON.stringify(learned))
                                                             isrunning = false;
                                                         }
                                                         clicked = false;
@@ -79,7 +81,7 @@ function main() {
                                             }
                                         }
                                     }
-                                    setTimeout(clickbtn(element), 2000);
+                                    clickbtn(element);
                                 });
                             }, 1000);
                         }
@@ -87,7 +89,7 @@ function main() {
                         var word = question.querySelector("div.word > div.wrapper").innerText;
 
                         choices.querySelectorAll("a").forEach(element => {
-                            if (questions[element.getAttribute("style")]) {
+                            if (learned[element.getAttribute("style")]) {
                                 element.click();
                                 setTimeout(() => {
                                     if (element.getAttribute("class") == "correct") {
@@ -112,8 +114,9 @@ function main() {
                                                     element.click();
                                                     setTimeout(() => {
                                                         if (element.getAttribute("class") == "correct") {
-                                                            questions[element.getAttribute("style")] = word;
+                                                            learned[element.getAttribute("style")] = word;
                                                             console.log(`${word}: ${element.getAttribute("style")}`)
+                                                            localStorage.setItem("learned",JSON.stringify(learned))
                                                             isrunning = false;
                                                         }
                                                         clicked = false;
@@ -122,7 +125,7 @@ function main() {
                                             }
                                         }
                                     }
-                                    setTimeout(clickbtn(element), 2000);
+                                    clickbtn(element);
                                 });
                             }, 1000);
                         }
@@ -149,6 +152,13 @@ function main() {
         }, 1000);
     }
     next_btn();
+
+    setTimeout(() => {
+        if (isrunning) {
+            isrunning = false;
+            console.log("Auto Restart, error occurred")
+        }
+    }, 15000);
 }
 
 main();
