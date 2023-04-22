@@ -1,10 +1,6 @@
 const delay = prompt("Delay per answer (MS)",2500);
 var questions = {}
 
-function sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-}
-
 var isrunning = false;
 function main() {
     
