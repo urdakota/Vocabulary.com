@@ -18,7 +18,7 @@ function main() {
         var questiontype = current.getAttribute("data-slide-type");
         var word = ""
         switch (questiontype) {
-            case "spelltheword":
+            case "spelling":
                 word = questionContent.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
                 question.querySelector("div.spelltheword > div.field.left > input").value = word;
                 setTimeout(() => {
@@ -71,7 +71,7 @@ function main() {
                                             setTimeout(() => {
                                                 if (element.getAttribute("class") === "correct") {
                                                     questions[realquestion] = element.innerText;
-                                                    console.log(`${realquestion} ${element.innerText}`)
+                                                    console.log(`${element.innerText}: ${realquestion}`)
                                                     isrunning = false;
                                                 }
                                                 clicked = false;
@@ -94,7 +94,6 @@ function main() {
         if (next.getAttribute("class") == "next active" && !isrunning) {
             next.click();
             setTimeout(() => {
-                console.log("restarted")
                 main();
                 isrunning = true; 
             }, delay);
