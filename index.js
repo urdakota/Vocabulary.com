@@ -9,26 +9,14 @@ function main() {
     var id = 0;
     var screens = document.querySelector("#challenge > div > div.questionPane");
     if (screens) {
-        screens.querySelectorAll("div").forEach(element => {
-            if (element.getAttribute("data-slot-id") > id) {
-                id = element.getAttribute("data-slot-id");
-            }
-        });
+        id = (screens.children.length) - 1;
         var current = screens.children[id];
         var question = current.querySelector("div > section.left > div.question");
-
         var questionContent = question.querySelector("div.questionContent");
         var next = document.querySelector("#challenge > div > div:nth-child(2) > button");
         
-        var questiontype = "";
-        if (question.querySelector("div.spelltheword")) {
-            questiontype = "spelltheword";
-        } else if (question.querySelector("div.choices")) {
-            questiontype = "choices"
-        }
-
+        var questiontype = current.getAttribute("data-slide-type");
         var word = ""
-        var realquestion = ""
         switch (questiontype) {
             case "spelltheword":
                 word = questionContent.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
@@ -38,8 +26,8 @@ function main() {
                     isrunning = false;
                 }, delay);
                 break;
-            case "choices":
-
+            case "choice":
+                var realquestion = ""
                 var choices = question.querySelector("div.choices");
                 var instructions = question.querySelector("div.instructions");
                 if (questionContent.children.length == 0) {
