@@ -36,7 +36,7 @@ function main() {
                     setTimeout(() => {
                         question.querySelector("div.spelltheword > div.field.right > button.spellit.ss-write.left").click();
                         isrunning = false;
-                    }, delay);
+                    }, 500);
                     break;
                 case "choice":
                     var realquestion = ""
@@ -61,7 +61,7 @@ function main() {
                                             isrunning = false;
                                         }
                                         clicked = false;
-                                    }, 1000);
+                                    }, 500);
                                 }
                             });
 
@@ -93,14 +93,14 @@ function main() {
                                                             isrunning = false;
                                                         }
                                                         clicked = false;
-                                                    }, 1000);
+                                                    }, 500);
                                                 }
                                             }
                                         }
                                     }
                                     clickbtn(element);
                                 });
-                            }, 1000);
+                            }, 500);
                         }
                     } else {
                         var word = question.querySelector("div.word > div.wrapper").innerText;
@@ -115,7 +115,7 @@ function main() {
                                         isrunning = false;
                                     }
                                     clicked = false;
-                                }, 1000);
+                                }, 500);
                             }
                         })
                         if (isrunning) {
@@ -140,14 +140,14 @@ function main() {
                                                             }
                                                         }
                                                         clicked = false;
-                                                    }, 1000);
+                                                    }, 500);
                                                 }
                                             }
                                         }
                                     }
                                     clickbtn(element);
                                 });
-                            }, 1000);
+                            }, 500);
                         }
                     }
                     break;
