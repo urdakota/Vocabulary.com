@@ -110,7 +110,7 @@ function main() {
                                 element.click();
                                 setTimeout(() => {
                                     if (element.getAttribute("class") == "correct") {
-                                        delete learned[realquestion];
+                                        delete learned[list][element.getAttribute("style")];
                                         localStorage.setItem("learned",JSON.stringify(learned))
                                         isrunning = false;
                                     }
