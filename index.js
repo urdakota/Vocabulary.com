@@ -75,9 +75,11 @@ function main() {
                                                     element.click();
                                                     setTimeout(() => {
                                                         if (element.getAttribute("class") == "correct") {
-                                                            learned[realquestion] = element.innerText;
                                                             console.log(`${element.innerText}: ${realquestion}`)
-                                                            localStorage.setItem("learned",JSON.stringify(learned))
+                                                            if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                                learned[realquestion] = element.innerText;
+                                                                localStorage.setItem("learned", JSON.stringify(learned))
+                                                            }
                                                             isrunning = false;
                                                         }
                                                         clicked = false;
@@ -121,10 +123,11 @@ function main() {
                                                     element.click();
                                                     setTimeout(() => {
                                                         if (element.getAttribute("class") == "correct") {
-                                                            learned[element.getAttribute("style")] = word;
-                                                            console.log(`${word}: ${element.getAttribute("style")}`)
-                                                            localStorage.setItem("learned",JSON.stringify(learned))
-                                                            isrunning = false;
+                                                            console.log(`${element.innerText}: ${element.getAttribute("style")}`)
+                                                            if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                                learned[element.getAttribute("style")] = element.innerText;
+                                                                localStorage.setItem("learned", JSON.stringify(learned))
+                                                            }
                                                         }
                                                         clicked = false;
                                                     }, 1000);
