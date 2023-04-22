@@ -1,4 +1,5 @@
-const delay = prompt("Delay per answer (MS)",2500);
+const delay = prompt("Delay per answer (MS)", 2500);
+const autorestart = confirm("Want the bot to automatically restart?")
 var learned = {}
 if (localStorage.getItem("learned") !== null) { learned = JSON.parse(localStorage.getItem("learned")) }
 
@@ -39,17 +40,21 @@ function main() {
                         }
 
                         if (learned[realquestion]) {
+                            let done = false;
                             choices.querySelectorAll("a").forEach(element => {
                                 if (learned[realquestion] == element.innerText) {
                                     element.click();
                                     setTimeout(() => {
                                         if (element.getAttribute("class") == "correct") {
+                                            learned.delete(realquestion);
+                                            localStorage.setItem("learned",JSON.stringify(learned))
                                             isrunning = false;
                                         }
                                         clicked = false;
                                     }, 1000);
                                 }
                             });
+
                         } else {
                             var lifeLines = question.querySelector("div.lifeLines");
                             var lifeLineContent = question.querySelector("div.lifeLineContent");
@@ -93,6 +98,8 @@ function main() {
                                 element.click();
                                 setTimeout(() => {
                                     if (element.getAttribute("class") == "correct") {
+                                        learned.delete(realquestion);
+                                        localStorage.setItem("learned",JSON.stringify(learned))
                                         isrunning = false;
                                     }
                                     clicked = false;
@@ -154,9 +161,11 @@ function main() {
     next_btn();
 
     setTimeout(() => {
-        if (isrunning) {
+        if (isrunning && autorestart && !(next.getAttribute("class") == "next active")) {
             isrunning = false;
-            console.log("Auto Restart, error occurred")
+            console.log("Automatically restarted!")
+            main();
+            isrunning = true; 
         }
     }, 15000);
 }
