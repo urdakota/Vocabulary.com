@@ -1,9 +1,9 @@
 # Vocabulary.com Bot
-Automatic Vocabulary.com mastery bookmarklet
-This is a project i made because im too lazy to do my vocab
+Automatic Vocabulary.com mastery bookmarklet \
+This is a project i made because im too lazy to do my vocab 🤑
 ## WARNING
 > *This can get your account **RESTRICTED** or **BANNED** if you set the delay too small* \
-> use **1500 MS** *1.5 seconds* or more in delay 
+> use **1500 MS** *1.5 seconds* or more in delay 👿
 
 ![](auto.gif)
 
@@ -13,7 +13,7 @@ Make a new bookmark with this as the link & click it on your vocabulary.com prac
 javascript:  fetch("https://raw.githubusercontent.com/urdakota/Vocabulary.com/main/index.js").then((res) => res.text().then((t) => eval(t)))
 ```
 
-## What it does
+## What it does 🤔
 - Automatically guesses & remembers the answers for multiple choice questions
 - Automatically guesses & remembers the answers for image questions
 - Automatically fills in the answer for spelling questions
