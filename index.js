@@ -57,6 +57,12 @@ function main() {
                 choices.querySelectorAll("a").forEach(element => {
                     if (questions[realquestion] == element.innerText) {
                         element.click();
+                        setTimeout(() => {
+                            if (element.getAttribute("class") === "correct") {
+                                isrunning = false;
+                            }
+                            clicked = false;
+                        }, 2000);
                     }
                 });
             } else {
