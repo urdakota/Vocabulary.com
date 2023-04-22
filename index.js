@@ -1,8 +1,17 @@
 const delay = prompt("Delay per answer (MS)", 2500);
 const autorestart = confirm("Want the bot to automatically restart?")
-var learned = {}
-if (localStorage.getItem("learned") !== null) { learned = JSON.parse(localStorage.getItem("learned")) }
 
+let list = window.location.href.split("/")[4]
+if (list.includes("/practice")) { list = list.split("/practice")[0] }
+
+var learned = {}
+if (localStorage.getItem("learned") !== null) {
+    learned = JSON.parse(localStorage.getItem("learned"))
+}
+if (!learned[list]) {
+    learned[list] = {};
+    localStorage.setItem("learned",JSON.stringify(learned))
+}
 var isrunning = false;
 function main() {
     
@@ -39,14 +48,14 @@ function main() {
                             realquestion = questionContent.children[0].innerText
                         }
 
-                        if (learned[realquestion]) {
+                        if (learned[list][realquestion]) {
                             let done = false;
                             choices.querySelectorAll("a").forEach(element => {
-                                if (learned[realquestion] == element.innerText) {
+                                if (learned[list][realquestion] == element.innerText) {
                                     element.click();
                                     setTimeout(() => {
                                         if (element.getAttribute("class") == "correct") {
-                                            delete learned[realquestion];
+                                            delete learned[list][realquestion];
                                             localStorage.setItem("learned",JSON.stringify(learned))
                                             isrunning = false;
                                         }
@@ -77,7 +86,7 @@ function main() {
                                                         if (element.getAttribute("class") == "correct") {
                                                             console.log(`${element.innerText}: ${realquestion}`)
                                                             if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                                learned[realquestion] = element.innerText;
+                                                                learned[list][realquestion] = element.innerText;
                                                                 localStorage.setItem("learned", JSON.stringify(learned))
                                                             }
                                                             isrunning = false;
@@ -96,7 +105,7 @@ function main() {
                         var word = question.querySelector("div.word > div.wrapper").innerText;
 
                         choices.querySelectorAll("a").forEach(element => {
-                            if (learned[element.getAttribute("style")]) {
+                            if (learned[list][element.getAttribute("style")]) {
                                 element.click();
                                 setTimeout(() => {
                                     if (element.getAttribute("class") == "correct") {
@@ -125,7 +134,7 @@ function main() {
                                                         if (element.getAttribute("class") == "correct") {
                                                             console.log(`${element.innerText}: ${element.getAttribute("style")}`)
                                                             if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                                learned[element.getAttribute("style")] = element.innerText;
+                                                                learned[list][element.getAttribute("style")] = element.innerText;
                                                                 localStorage.setItem("learned", JSON.stringify(learned))
                                                             }
                                                         }
