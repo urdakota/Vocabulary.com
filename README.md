@@ -5,7 +5,7 @@ This is a project i made for fun because im too lazy to do my vocab
 
 ## WARNING
 > *This can get your account **RESTRICTED** or **BANNED** if you set the delay too small*
-> Id recommend around *2.5 seconds* in delay **(2500 MS)**
+> **1500 MS** *1.5 seconds* or more in delay 
 
 ![](auto.gif)
 
