@@ -23,7 +23,7 @@ function main() {
     if (screens) {
         id = (screens.children.length) - 1;
         var current = screens.children[id];
-        if (current) {
+        if (current && current.querySelector("div > section.left > div.question")) {
             var question = current.querySelector("div > section.left > div.question");
             var questionContent = question.querySelector("div.questionContent");
             var next = document.querySelector("#challenge > div > div:nth-child(2) > button");
@@ -36,7 +36,7 @@ function main() {
                     setTimeout(() => {
                         question.querySelector("div.spelltheword > div.field.right > button.spellit.ss-write.left").click();
                         isrunning = false;
-                    }, 500);
+                    }, delay);
                     break;
                 case "choice":
                     var realquestion = ""
@@ -76,36 +76,34 @@ function main() {
                             if (lifeLines && lifeLines.getAttribute("style") != "display:none;") {
                                 lifeLines.querySelector("span:nth-child(2) > a:nth-child(1)").click();
                             }
-                            setTimeout(() => {
-                                choices.querySelectorAll("a").forEach(element => {
-                                    function clickbtn(element) {
-                                        if (choices.getElementsByClassName("correct").length == 0) {
-                                            if (element.getAttribute("class") != "incorrect") {
-                                                if (clicked) {
-                                                    setTimeout(() => {
-                                                        clickbtn(element)
-                                                    }, 1000);
-                                                } else {
-                                                    clicked = true;
-                                                    element.click();
-                                                    setTimeout(() => {
-                                                        if (element.getAttribute("class") == "correct") {
-                                                            console.log(`${realquestion} (${element.innerText})`)
-                                                            if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                                learned[list][realquestion] = element.innerText;
-                                                                localStorage.setItem("learned", JSON.stringify(learned))
-                                                            }
-                                                            isrunning = false;
+                            choices.querySelectorAll("a").forEach(element => {
+                                function clickbtn(element) {
+                                    if (choices.getElementsByClassName("correct").length == 0) {
+                                        if (element.getAttribute("class") != "incorrect") {
+                                            if (clicked) {
+                                                setTimeout(() => {
+                                                    clickbtn(element)
+                                                }, 500);
+                                            } else {
+                                                clicked = true;
+                                                element.click();
+                                                setTimeout(() => {
+                                                    if (element.getAttribute("class") == "correct") {
+                                                        console.log(`${realquestion} (${element.innerText})`)
+                                                        if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                            learned[list][realquestion] = element.innerText;
+                                                            localStorage.setItem("learned", JSON.stringify(learned))
                                                         }
-                                                        clicked = false;
-                                                    }, 500);
-                                                }
+                                                        isrunning = false;
+                                                    }
+                                                    clicked = false;
+                                                }, delay);
                                             }
                                         }
                                     }
-                                    clickbtn(element);
-                                });
-                            }, 500);
+                                }
+                                clickbtn(element);
+                            });
                         }
                     } else {
                         var word = question.querySelector("div.word > div.wrapper").innerText;
@@ -124,35 +122,33 @@ function main() {
                             }
                         })
                         if (isrunning) {
-                            setTimeout(() => {
-                                choices.querySelectorAll("a").forEach(element => {
-                                    function clickbtn(element) {
-                                        if (choices.getElementsByClassName("correct").length === 0) {
-                                            if (element.getAttribute("class") != "incorrect") {
-                                                if (clicked) {
-                                                    setTimeout(() => {
-                                                        clickbtn(element)
-                                                    }, 1000);
-                                                } else {
-                                                    clicked = true;
-                                                    element.click();
-                                                    setTimeout(() => {
-                                                        if (element.getAttribute("class") == "correct") {
-                                                            console.log(`${element.innerText} (${element.getAttribute("style")})`)
-                                                            if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                                learned[list][element.getAttribute("style")] = element.innerText;
-                                                                localStorage.setItem("learned", JSON.stringify(learned))
-                                                            }
+                            choices.querySelectorAll("a").forEach(element => {
+                                function clickbtn(element) {
+                                    if (choices.getElementsByClassName("correct").length === 0) {
+                                        if (element.getAttribute("class") != "incorrect") {
+                                            if (clicked) {
+                                                setTimeout(() => {
+                                                    clickbtn(element)
+                                                }, 500);
+                                            } else {
+                                                clicked = true;
+                                                element.click();
+                                                setTimeout(() => {
+                                                    if (element.getAttribute("class") == "correct") {
+                                                        console.log(`${element.innerText} (${element.getAttribute("style")})`)
+                                                        if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                            learned[list][element.getAttribute("style")] = element.innerText;
+                                                            localStorage.setItem("learned", JSON.stringify(learned))
                                                         }
-                                                        clicked = false;
-                                                    }, 500);
-                                                }
+                                                    }
+                                                    clicked = false;
+                                                }, delay);
                                             }
                                         }
                                     }
-                                    clickbtn(element);
-                                });
-                            }, 500);
+                                }
+                                clickbtn(element);
+                            });
                         }
                     }
                     break;
