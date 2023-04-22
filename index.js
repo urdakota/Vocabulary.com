@@ -28,7 +28,7 @@ function main() {
             case "choice":
                 var realquestion = ""
                 var choices = question.querySelector("div.choices");
-                if (question.querySelector("div.instructions")) {
+                if (!(choices.children[0].getAttribute("style") && choices.children[0].getAttribute("style").includes("background-image"))) {
                     var instructions = question.querySelector("div.instructions");
                     if (questionContent.children.length == 0) {
                         realquestion = instructions.innerText;
