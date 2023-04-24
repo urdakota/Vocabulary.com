@@ -37,7 +37,10 @@ function loop(){
                 var realquestion = "- none -";
                 var choices = questionholder.querySelector("div.choices");
 
-                    // I need to add a better way to detect this
+                
+                alert(realquestion)
+                /*
+                // I need to add a better way to detect this
                 function updatequestion(element){
                     // Images
                     if (element && element.getAttribute("style").includes("background-image")) {
@@ -51,15 +54,8 @@ function loop(){
                             realquestion = question.children[0].innerText
                         }
                     }
-                    alert(realquestion.innerHTML)
                 }
-                if (question.children.length == 0) {
-                    realquestion = questionholder.querySelector("div.instructions").innerText;
-                } else {
-                    realquestion = question.children[0].innerText
-                }
-                alert(realquestion.innerHTML)
-                /*
+
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
                         if (element.getAttribute("class") != "incorrect") {
