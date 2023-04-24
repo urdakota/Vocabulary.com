@@ -35,8 +35,6 @@ function loop(){
             case "choice": // Multiple Choice
                 var realquestion = "- none -";
                 var choices = questionholder.querySelector("div.choices");
-                
-                alert(choices)
 
                 function updatequestion(element){
                     // I need to add a better way to detect this
