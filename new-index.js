@@ -37,13 +37,14 @@ function loop(){
                 var realquestion = "- none -";
                 var choices = questionholder.querySelector("div.choices");
 
-                function updatequestion(element){
                     // I need to add a better way to detect this
+                function updatequestion(element){
+                    // Images
                     if (element && element.getAttribute("style").includes("background-image")) {
-                        // Images
                         realquestion = element.getAttribute("style")
+                    
+                    // Multiple Choice Questions
                     } else {
-                        // Multiple Choice Questions
                         if (question.children.length == 0) {
                             realquestion = questionholder.querySelector("div.instructions").innerText;
                         } else {
@@ -53,8 +54,6 @@ function loop(){
                     alert(realquestion.innerHTML)
                 }
                 
-                updatequestion(null)
-                /*
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
                         if (element.getAttribute("class") != "incorrect") {
@@ -93,7 +92,6 @@ function loop(){
                         }
                     })
                 }
-                */
                 
                 break;
             default:
