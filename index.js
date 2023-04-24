@@ -127,7 +127,6 @@ async function main(){
     } while (nextbtn.getAttribute("class") == "next active")
 
     main();
-    console.log("Restarted!");
 
 }
 
