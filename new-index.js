@@ -53,7 +53,9 @@ function loop(){
                     }
                     alert(realquestion.innerHTML)
                 }
-                
+
+                updatequestion(null)
+                /*
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
                         if (element.getAttribute("class") != "incorrect") {
@@ -83,7 +85,6 @@ function loop(){
                     }
                 })
                 
-
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
@@ -92,6 +93,7 @@ function loop(){
                         }
                     })
                 }
+                */
                 
                 break;
             default:
