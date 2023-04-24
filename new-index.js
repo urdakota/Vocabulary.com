@@ -23,7 +23,7 @@ function loop(){
         var questiontype = currentscreen.getAttribute("data-slide-type");
         switch(questiontype){
             case "spelling": // Spelling (Fill in the blanks)
-                var word = questionContent.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
+                var word = question.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
                 
                 // Potential wait, I don't know yet
                 question.querySelector("div.spelltheword > div.field.left > input").value = word;
@@ -31,11 +31,55 @@ function loop(){
                 
                 break;
             case "choice": // Multiple Choice
+                var realquestion = "";
                 var choices = question.querySelector("div.choices");
-                if (choices.children[0].getAttribute("style") && choices.children[0].getAttribute("style").includes("background-image")) {
+                choices.querySelectorAll("a").forEach(element => {
+                    // I need to add a better way to detect this
+                    if (element.getAttribute("style").includes("background-image")) {
+                        // Images
+                        realquestion = element.getAttribute("style")
+                    } else {
+                        // Multiple Choice Questions
+                        var instructions = question.querySelector("div.instructions");
+                        if (question.children.length == 0) {
+                            realquestion = instructions.innerText;
+                        } else {
+                            realquestion = question.children[0].innerText
+                        }
+                    }
+
+                    if (learned[list][realquestion]) {
+                        element.click();
+                        // Delete question from learned table
+                        delete learned[list][realquestion];
+                        localStorage.setItem("learned",JSON.stringify(learned))
+                    }
+                })
+
+                if (choices.getElementsByClassName("correct").length === 0){
+                    choices.querySelectorAll("a").forEach(element => {
+                        async function clickbtn(element) {
+                            if (choices.getElementsByClassName("correct").length === 0) {
+                                if (element.getAttribute("class") != "incorrect") {
+                                    element.click();
+                                    setTimeout(() => {
+                                        if (element.getAttribute("class") == "correct") {
+                                            if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                learned[list][realquestion] = element.innerText;
+                                                localStorage.setItem("learned", JSON.stringify(learned))
+                                            }
+                                        }
+                                    }, delay);
+                                }
+                            }
+                            return;
+                        }
+                        await clickbtn(element);
+                    })
+                }
+                
                     // Image Select
 
-                    var islearned = false;
                     var word = question.querySelector("div.word > div.wrapper").innerText;
                     
                     choices.querySelectorAll("a").forEach(element => {
@@ -50,38 +94,66 @@ function loop(){
 
                     if (choices.getElementsByClassName("correct").length === 0){
                         choices.querySelectorAll("a").forEach(element => {
-                            function clickbtn(element) {
+                            async function clickbtn(element) {
                                 if (choices.getElementsByClassName("correct").length === 0) {
                                     if (element.getAttribute("class") != "incorrect") {
-                                        if (clicked) {
-                                            setTimeout(() => {
-                                                clickbtn(element)
-                                            }, 500);
-                                        } else {
-                                            clicked = true;
-                                            element.click();
-                                            setTimeout(() => {
-                                                if (element.getAttribute("class") == "correct") {
-                                                    console.log(`${element.innerText} (${element.getAttribute("style")})`)
-                                                    if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                        learned[list][element.getAttribute("style")] = element.innerText;
-                                                        localStorage.setItem("learned", JSON.stringify(learned))
-                                                        isrunning = false;
-                                                    }
+                                        element.click();
+                                        setTimeout(() => {
+                                            if (element.getAttribute("class") == "correct") {
+                                                if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                    learned[list][element.getAttribute("style")] = element.innerText;
+                                                    localStorage.setItem("learned", JSON.stringify(learned))
                                                 }
-                                                clicked = false;
-                                            }, delay);
-                                        }
+                                            }
+                                        }, delay);
                                     }
                                 }
+                                return;
                             }
-                            clickbtn(element);
+                            await clickbtn(element);
                         })
                     }
                 } else {
                     // Normal Multiple Choice
-                    
+                    var realquestion = "";
+                    var instructions = question.querySelector("div.instructions");
+                    if (questionContent.children.length == 0) {
+                        realquestion = instructions.innerText;
+                    } else {
+                        realquestion = questionContent.children[0].innerText
+                    }
 
+                    choices.querySelectorAll("a").forEach(element => {
+                        // I need to add a better way to detect this
+                        if (learned[list][realquestion]) {
+                            element.click();
+                            // Delete question from learned table
+                            delete learned[list][realquestion];
+                            localStorage.setItem("learned",JSON.stringify(learned))
+                        }
+                    })
+
+                    if (choices.getElementsByClassName("correct").length === 0){
+                        choices.querySelectorAll("a").forEach(element => {
+                            async function clickbtn(element) {
+                                if (choices.getElementsByClassName("correct").length === 0) {
+                                    if (element.getAttribute("class") != "incorrect") {
+                                        element.click();
+                                        setTimeout(() => {
+                                            if (element.getAttribute("class") == "correct") {
+                                                if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                    learned[list][realquestion] = element.innerText;
+                                                    localStorage.setItem("learned", JSON.stringify(learned))
+                                                }
+                                            }
+                                        }, delay);
+                                    }
+                                }
+                                return;
+                            }
+                            await clickbtn(element);
+                        })
+                    }
                 }
 
                 break;
