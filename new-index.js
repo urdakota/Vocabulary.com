@@ -53,6 +53,7 @@ function loop(){
                     alert(realquestion)
                 }
                 
+                /*
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
                         if (element.getAttribute("class") != "incorrect") {
@@ -70,6 +71,7 @@ function loop(){
                     }
                     return;
                 }
+                */
 
                 // Check if known & click
                 choices.querySelectorAll("a").forEach(element => {
