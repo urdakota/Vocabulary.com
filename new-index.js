@@ -88,6 +88,7 @@ function loop(){
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
+                        updatequestion(element)
                         async () => {
                             const result = await clickbtn(element);
                         }
