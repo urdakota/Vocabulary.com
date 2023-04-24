@@ -15,7 +15,7 @@ if (!learned[list]) {
 var nextbtn = document.querySelector("#challenge > div > div:nth-child(2) > button");
 var screens = document.querySelector("#challenge > div > div.questionPane");
 
-/*
+
 function loop(){
     var screenid = (screens.children.length) - 1;
     var currentscreen = screens.children[screenid];
@@ -99,11 +99,11 @@ function loop(){
     }
     return;
 }
-*/
+
 // Wait for function to finish
 // https://stackoverflow.com/questions/21518381/proper-way-to-wait-for-one-function-to-finish-before-continuing
 const run = async () => {
-    //await loop();
+    await loop();
     
     // Click next
     if (nextbtn.getAttribute("class") == "next active") {
