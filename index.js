@@ -81,8 +81,14 @@ function loop(){
                                 updatequestion(element);
                                 if (element.getAttribute("style") && element.getAttribute("style").includes("background-image")) {
                                     learned[list][realquestion] = element.getAttribute("style");
+                                    
+                                    // Debug
+                                    console.log(`learned[${list}][${realquestion}] = ${element.getAttribute("style")};`)
                                 } else {
                                     learned[list][realquestion] = element.innerText;
+                                    
+                                    // Debug
+                                    console.log(`learned[${list}][${realquestion}] = ${element.innerText};`)
                                 }
                                 localStorage.setItem("learned", JSON.stringify(learned));
                             }
