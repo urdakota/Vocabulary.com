@@ -14,6 +14,7 @@ if (!learned[list]) {
 
 var nextbtn = document.querySelector("#challenge > div > div:nth-child(2) > button");
 var screens = document.querySelector("#challenge > div > div.questionPane");
+
 /*
 function loop(){
     var screenid = (screens.children.length) - 1;
