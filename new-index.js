@@ -53,8 +53,12 @@ function loop(){
                     }
                     alert(realquestion.innerHTML)
                 }
-
-                updatequestion(null)
+                if (question.children.length == 0) {
+                    realquestion = questionholder.querySelector("div.instructions").innerText;
+                } else {
+                    realquestion = question.children[0].innerText
+                }
+                alert(realquestion.innerHTML)
                 /*
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
