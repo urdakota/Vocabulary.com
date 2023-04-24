@@ -44,7 +44,7 @@ function loop(){
                         realquestion = element.getAttribute("style")
                     } else {
                         // Multiple Choice Questions
-                        var instructions = question.querySelector("div.instructions");
+                        var instructions = questionholder.querySelector("div.instructions");
                         if (question.children.length == 0) {
                             realquestion = instructions.innerText;
                         } else {
