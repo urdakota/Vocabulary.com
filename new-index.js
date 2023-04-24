@@ -50,6 +50,7 @@ function loop(){
                             realquestion = question.children[0].innerText
                         }
                     }
+                    alert(realquestion)
                 }
                 
                 function clickbtn(element) {
