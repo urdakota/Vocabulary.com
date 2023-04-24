@@ -36,6 +36,8 @@ function loop(){
                 var realquestion = "- none -";
                 var choices = questionholder.querySelector("div.choices");
                 
+                alert(choices)
+
                 function updatequestion(element){
                     // I need to add a better way to detect this
                     if (element && element.getAttribute("style").includes("background-image")) {
@@ -71,7 +73,6 @@ function loop(){
                     }
                     return;
                 }
-                */
 
                 // Check if known & click
                 choices.querySelectorAll("a").forEach(element => {
@@ -83,6 +84,7 @@ function loop(){
                         localStorage.setItem("learned",JSON.stringify(learned))
                     }
                 })
+                */
 
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
