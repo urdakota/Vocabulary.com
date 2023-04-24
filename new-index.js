@@ -99,7 +99,6 @@ function loop(){
     return;
 }
 
-*/
 // Wait for function to finish
 // https://stackoverflow.com/questions/21518381/proper-way-to-wait-for-one-function-to-finish-before-continuing
 const run = async () => {
@@ -115,3 +114,4 @@ const run = async () => {
 }
 
 run();
+*/
