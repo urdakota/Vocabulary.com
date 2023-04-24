@@ -4,8 +4,6 @@ let list = window.location.href.split("/")[4]
 if (list.includes("/practice")) { list = list.split("/practice")[0] }
 if (list.includes("/vocabtrainer")) { list = list.split("/vocabtrainer")[1] }
 
-alert(list)
-
 var learned = {}
 if (localStorage.getItem("learned") !== null) {
     learned = JSON.parse(localStorage.getItem("learned"))
