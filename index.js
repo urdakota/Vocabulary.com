@@ -162,7 +162,9 @@ function main() {
             }
         }
         setTimeout(() => {
-            //next_btn();
+            if (next.getAttribute("class") != "next active") {
+                next_btn();
+            }
         }, 500);
     }
     next_btn();
