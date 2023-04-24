@@ -162,7 +162,7 @@ function main() {
             }
         }
         setTimeout(() => {
-            next_btn();
+            //next_btn();
         }, 500);
     }
     next_btn();
