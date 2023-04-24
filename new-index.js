@@ -60,7 +60,7 @@ function loop(){
                             setTimeout(() => {
                                 if (element.getAttribute("class") == "correct") {
                                     if (choices.getElementsByClassName("incorrect").length != 0) {
-                                        updatequestion();
+                                        updatequestion(element);
                                         learned[list][realquestion] = element.innerText;
                                         localStorage.setItem("learned", JSON.stringify(learned))
                                     }
