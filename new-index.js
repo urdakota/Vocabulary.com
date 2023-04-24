@@ -23,8 +23,7 @@ function loop(){
     if (questionholder){
         var question = questionholder.querySelector("div.questionContent");
         var questiontype = currentscreen.getAttribute("data-slide-type");
-        alert(questiontype);
-        /*switch(questiontype){
+        switch(questiontype){
             case "spelling": // Spelling (Fill in the blanks)
                 var word = question.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
                 
@@ -74,7 +73,7 @@ function loop(){
                 // Check if known & click
                 choices.querySelectorAll("a").forEach(element => {
                     updatequestion();
-
+                    alert(realquestion);
                     if (learned[list][realquestion]) {
                         element.click();
                         // Delete question from learned table
@@ -86,7 +85,8 @@ function loop(){
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
-                        await clickbtn(element);
+                        alert(realquestion);
+                        //await clickbtn(element);
                     })
                 }
 
@@ -96,7 +96,7 @@ function loop(){
                 break;
 
             // End of switch
-        }*/
+        }
     }
     return;
 }
