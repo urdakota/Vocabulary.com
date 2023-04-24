@@ -33,7 +33,8 @@ function loop(){
             case "choice": // Multiple Choice
                 var realquestion = "";
                 var choices = question.querySelector("div.choices");
-                choices.querySelectorAll("a").forEach(element => {
+                
+                function updatequestion(){
                     // I need to add a better way to detect this
                     if (element.getAttribute("style").includes("background-image")) {
                         // Images
@@ -47,6 +48,11 @@ function loop(){
                             realquestion = question.children[0].innerText
                         }
                     }
+                }
+
+                // Check if known & click
+                choices.querySelectorAll("a").forEach(element => {
+                    updatequestion();
 
                     if (learned[list][realquestion]) {
                         element.click();
@@ -56,15 +62,17 @@ function loop(){
                     }
                 })
 
+                // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
-                        async function clickbtn(element) {
+                        function clickbtn(element) {
                             if (choices.getElementsByClassName("correct").length === 0) {
                                 if (element.getAttribute("class") != "incorrect") {
                                     element.click();
                                     setTimeout(() => {
                                         if (element.getAttribute("class") == "correct") {
                                             if (choices.getElementsByClassName("incorrect").length != 0) {
+                                                updatequestion();
                                                 learned[list][realquestion] = element.innerText;
                                                 localStorage.setItem("learned", JSON.stringify(learned))
                                             }
@@ -76,84 +84,6 @@ function loop(){
                         }
                         await clickbtn(element);
                     })
-                }
-                
-                    // Image Select
-
-                    var word = question.querySelector("div.word > div.wrapper").innerText;
-                    
-                    choices.querySelectorAll("a").forEach(element => {
-                        // I need to add a better way to detect this
-                        if (learned[list][element.getAttribute("style")]) {
-                            element.click();
-                            // Delete image from learned table
-                            delete learned[list][element.getAttribute("style")];
-                            localStorage.setItem("learned",JSON.stringify(learned))
-                        }
-                    })
-
-                    if (choices.getElementsByClassName("correct").length === 0){
-                        choices.querySelectorAll("a").forEach(element => {
-                            async function clickbtn(element) {
-                                if (choices.getElementsByClassName("correct").length === 0) {
-                                    if (element.getAttribute("class") != "incorrect") {
-                                        element.click();
-                                        setTimeout(() => {
-                                            if (element.getAttribute("class") == "correct") {
-                                                if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                    learned[list][element.getAttribute("style")] = element.innerText;
-                                                    localStorage.setItem("learned", JSON.stringify(learned))
-                                                }
-                                            }
-                                        }, delay);
-                                    }
-                                }
-                                return;
-                            }
-                            await clickbtn(element);
-                        })
-                    }
-                } else {
-                    // Normal Multiple Choice
-                    var realquestion = "";
-                    var instructions = question.querySelector("div.instructions");
-                    if (questionContent.children.length == 0) {
-                        realquestion = instructions.innerText;
-                    } else {
-                        realquestion = questionContent.children[0].innerText
-                    }
-
-                    choices.querySelectorAll("a").forEach(element => {
-                        // I need to add a better way to detect this
-                        if (learned[list][realquestion]) {
-                            element.click();
-                            // Delete question from learned table
-                            delete learned[list][realquestion];
-                            localStorage.setItem("learned",JSON.stringify(learned))
-                        }
-                    })
-
-                    if (choices.getElementsByClassName("correct").length === 0){
-                        choices.querySelectorAll("a").forEach(element => {
-                            async function clickbtn(element) {
-                                if (choices.getElementsByClassName("correct").length === 0) {
-                                    if (element.getAttribute("class") != "incorrect") {
-                                        element.click();
-                                        setTimeout(() => {
-                                            if (element.getAttribute("class") == "correct") {
-                                                if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                    learned[list][realquestion] = element.innerText;
-                                                    localStorage.setItem("learned", JSON.stringify(learned))
-                                                }
-                                            }
-                                        }, delay);
-                                    }
-                                }
-                                return;
-                            }
-                            await clickbtn(element);
-                        })
-                    }
                 }
 
                 break;
@@ -172,6 +102,13 @@ function loop(){
 const run = async () => {
     await loop();
     
+    // Click next
+    if (next.getAttribute("class") == "next active") {
+        next.click();
+    }
+
+    // Restart loop
+    // run();
 }
 
 run();
