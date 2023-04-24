@@ -23,7 +23,8 @@ function loop(){
     if (questionholder){
         var question = questionholder.querySelector("div.questionContent");
         var questiontype = currentscreen.getAttribute("data-slide-type");
-        switch(questiontype){
+        alert(questiontype);
+        /*switch(questiontype){
             case "spelling": // Spelling (Fill in the blanks)
                 var word = question.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
                 
@@ -95,7 +96,7 @@ function loop(){
                 break;
 
             // End of switch
-        }
+        }*/
     }
     return;
 }
