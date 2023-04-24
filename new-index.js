@@ -71,6 +71,7 @@ function loop(){
                     }
                     return;
                 }
+                */
 
                 // Check if known & click
                 choices.querySelectorAll("a").forEach(element => {
@@ -82,7 +83,7 @@ function loop(){
                         localStorage.setItem("learned",JSON.stringify(learned))
                     }
                 })
-                */
+                
 
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
