@@ -36,8 +36,9 @@ function loop(){
                 var realquestion = "- none -";
                 var choices = question.querySelector("div.choices");
                 
-                alert(question)
-                //alert(question.children[0].innerHTML)
+                question.children.forEach(element => {
+                    alert(element.innerHTML)
+                });
                 
                 /*
                 function updatequestion(element){
