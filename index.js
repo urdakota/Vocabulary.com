@@ -153,12 +153,13 @@ function main() {
     }
 
     function next_btn() {
-        if (next.getAttribute("class") == "next active" && !isrunning) {
-            next.click();
-        }
-        if (next.getAttribute("class") != "next active" && !isrunning && !restarted) {
-            main();
-            restarted = true;
+        if (!isrunning){
+            if (next.getAttribute("class") == "next active") {
+                next.click();
+            } else {
+                main();
+                restarted = true;
+            }
         }
         setTimeout(() => {
             next_btn();
