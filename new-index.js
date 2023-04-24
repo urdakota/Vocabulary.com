@@ -36,9 +36,9 @@ function loop(){
                 var realquestion = "";
                 var choices = question.querySelector("div.choices");
                 
-                function updatequestion(){
+                function updatequestion(element){
                     // I need to add a better way to detect this
-                    if (element.getAttribute("style").includes("background-image")) {
+                    if (element && element.getAttribute("style").includes("background-image")) {
                         // Images
                         realquestion = element.getAttribute("style")
                     } else {
@@ -50,6 +50,7 @@ function loop(){
                             realquestion = question.children[0].innerText
                         }
                     }
+                    alert(realquestion)
                 }
 
                 function clickbtn(element) {
@@ -72,8 +73,7 @@ function loop(){
 
                 // Check if known & click
                 choices.querySelectorAll("a").forEach(element => {
-                    updatequestion();
-                    alert(realquestion);
+                    updatequestion(element);
                     if (learned[list][realquestion]) {
                         element.click();
                         // Delete question from learned table
@@ -85,7 +85,6 @@ function loop(){
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
-                        alert(realquestion);
                         //await clickbtn(element);
                     })
                 }
