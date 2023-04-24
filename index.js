@@ -156,16 +156,17 @@ function main() {
         if (!isrunning){
             if (next.getAttribute("class") == "next active") {
                 next.click();
+                setTimeout(() => {
+                    if (next.getAttribute("class") != "next active") {
+                        next_btn();
+                    }
+                }, 500);
             } else {
                 main();
                 restarted = true;
             }
         }
-        setTimeout(() => {
-            if (next.getAttribute("class") != "next active") {
-                next_btn();
-            }
-        }, 500);
+        
     }
     next_btn();
 }
