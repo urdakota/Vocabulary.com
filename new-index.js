@@ -50,6 +50,24 @@ function loop(){
                     }
                 }
 
+                function clickbtn(element) {
+                    if (choices.getElementsByClassName("correct").length === 0) {
+                        if (element.getAttribute("class") != "incorrect") {
+                            element.click();
+                            setTimeout(() => {
+                                if (element.getAttribute("class") == "correct") {
+                                    if (choices.getElementsByClassName("incorrect").length != 0) {
+                                        updatequestion();
+                                        learned[list][realquestion] = element.innerText;
+                                        localStorage.setItem("learned", JSON.stringify(learned))
+                                    }
+                                }
+                            }, delay);
+                        }
+                    }
+                    return;
+                }
+
                 // Check if known & click
                 choices.querySelectorAll("a").forEach(element => {
                     updatequestion();
@@ -65,23 +83,6 @@ function loop(){
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
-                        function clickbtn(element) {
-                            if (choices.getElementsByClassName("correct").length === 0) {
-                                if (element.getAttribute("class") != "incorrect") {
-                                    element.click();
-                                    setTimeout(() => {
-                                        if (element.getAttribute("class") == "correct") {
-                                            if (choices.getElementsByClassName("incorrect").length != 0) {
-                                                updatequestion();
-                                                learned[list][realquestion] = element.innerText;
-                                                localStorage.setItem("learned", JSON.stringify(learned))
-                                            }
-                                        }
-                                    }, delay);
-                                }
-                            }
-                            return;
-                        }
                         await clickbtn(element);
                     })
                 }
