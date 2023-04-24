@@ -106,8 +106,8 @@ const run = async () => {
     //await loop();
     
     // Click next
-    if (next.getAttribute("class") == "next active") {
-        next.click();
+    if (nextbtn.getAttribute("class") == "next active") {
+        nextbtn.click();
     }
 
     // Restart loop
