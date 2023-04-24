@@ -36,7 +36,7 @@ function loop(){
                 var realquestion = "- none -";
                 var choices = question.querySelector("div.choices");
                 
-                alert(choices)
+                alert(question.children[0])
                 /*
                 function updatequestion(element){
                     // I need to add a better way to detect this
