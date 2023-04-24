@@ -18,7 +18,9 @@ function main() {
     
     var clicked = false;
     var isrunning = true;
+    var restarted = true;
     var id = 0;
+    var next = document.querySelector("#challenge > div > div:nth-child(2) > button");
     var screens = document.querySelector("#challenge > div > div.questionPane");
     if (screens) {
         id = (screens.children.length) - 1;
@@ -26,14 +28,13 @@ function main() {
         if (current && current.querySelector("div > section.left > div.question")) {
             var question = current.querySelector("div > section.left > div.question");
             var questionContent = question.querySelector("div.questionContent");
-            var next = document.querySelector("#challenge > div > div:nth-child(2) > button");
             
             var questiontype = current.getAttribute("data-slide-type");
             switch (questiontype) {
                 case "spelling":
                     var word = questionContent.querySelector("div.sentence.complete").getElementsByTagName("strong")[0].innerText;
-                    question.querySelector("div.spelltheword > div.field.left > input").value = word;
                     setTimeout(() => {
+                        question.querySelector("div.spelltheword > div.field.left > input").value = word;
                         question.querySelector("div.spelltheword > div.field.right > button.spellit.ss-write.left").click();
                         isrunning = false;
                     }, delay);
@@ -69,13 +70,7 @@ function main() {
                                     }, 500);
                                 }
                             });
-
                         } else {
-                            var lifeLines = question.querySelector("div.lifeLines");
-                            var lifeLineContent = question.querySelector("div.lifeLineContent");
-                            if (lifeLines && lifeLines.getAttribute("style") != "display:none;") {
-                                lifeLines.querySelector("span:nth-child(2) > a:nth-child(1)").click();
-                            }
                             choices.querySelectorAll("a").forEach(element => {
                                 function clickbtn(element) {
                                     if (choices.getElementsByClassName("correct").length == 0) {
@@ -139,6 +134,7 @@ function main() {
                                                         if (choices.getElementsByClassName("incorrect").length != 0) {
                                                             learned[list][element.getAttribute("style")] = element.innerText;
                                                             localStorage.setItem("learned", JSON.stringify(learned))
+                                                            isrunning = false;
                                                         }
                                                     }
                                                     clicked = false;
@@ -153,37 +149,22 @@ function main() {
                     }
                     break;
             }
-        } else {
-            isrunning = false;
         }
-    } else {
-        isrunning = false;
     }
 
     function next_btn() {
         if (next.getAttribute("class") == "next active" && !isrunning) {
             next.click();
-            setTimeout(() => {
-                if (!isrunning) {
-                    main();
-                    isrunning = true;
-                }
-            }, delay);
+        }
+        if (next.getAttribute("class") != "next active" && !isrunning && !restarted) {
+            main();
+            restarted = true;
         }
         setTimeout(() => {
             next_btn();
         }, 500);
     }
     next_btn();
-
-    setTimeout(() => {
-        if (isrunning && autorestart && !(next.getAttribute("class") == "next active")) {
-            isrunning = false;
-            console.log("Automatically restarted!")
-            main();
-            isrunning = true; 
-        }
-    }, 15000);
 }
 
 main();
