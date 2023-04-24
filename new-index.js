@@ -34,13 +34,8 @@ function loop(){
                 break;
             case "choice": // Multiple Choice
                 var realquestion = "- none -";
-                var choices = question.querySelector("div.choices");
+                var choices = questionholder.querySelector("div.choices");
                 
-                question.children.forEach(element => {
-                    alert(element.innerHTML)
-                });
-                
-                /*
                 function updatequestion(element){
                     // I need to add a better way to detect this
                     if (element && element.getAttribute("style").includes("background-image")) {
@@ -88,10 +83,10 @@ function loop(){
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
-                        //await clickbtn(element);
+                        await clickbtn(element);
                     })
                 }
-                */
+                
                 break;
             default:
                 alert(`Unknown question type!\nAdd issue on https://github.com/urdakota/Vocabulary.com\nQuestion Type:${questiontype}`)
