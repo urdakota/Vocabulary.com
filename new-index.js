@@ -2,6 +2,7 @@ const delay = prompt("Delay between loops (MS)", 2500);
 
 let list = window.location.href.split("/")[4]
 if (list.includes("/practice")) { list = list.split("/practice")[0] }
+if (list.includes("/vocabtrainer")) { list = list.split("/vocabtrainer")[1] }
 
 var learned = {}
 if (localStorage.getItem("learned") !== null) {
