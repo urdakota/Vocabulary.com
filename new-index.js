@@ -53,6 +53,8 @@ function loop(){
                     alert(realquestion)
                 }
 
+                updatequestion(null);
+                /*
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
                         if (element.getAttribute("class") != "incorrect") {
@@ -88,7 +90,7 @@ function loop(){
                         //await clickbtn(element);
                     })
                 }
-
+                */
                 break;
             default:
                 alert(`Unknown question type!\nAdd issue on https://github.com/urdakota/Vocabulary.com\nQuestion Type:${questiontype}`)
