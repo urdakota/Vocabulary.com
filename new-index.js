@@ -52,7 +52,7 @@ function loop(){
                             realquestion = question.children[0].innerText
                         }
                     }
-                    alert(realquestion)
+                    alert(realquestion.innerHTML)
                 }
                 
                 /*
@@ -89,7 +89,9 @@ function loop(){
                 // If none known, guess
                 if (choices.getElementsByClassName("correct").length === 0){
                     choices.querySelectorAll("a").forEach(element => {
-                        //await clickbtn(element);
+                        async () => {
+                            const result = await clickbtn(element);
+                        }
                     })
                 }
                 
