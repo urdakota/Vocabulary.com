@@ -33,9 +33,11 @@ function loop(){
                 
                 break;
             case "choice": // Multiple Choice
-                var realquestion = "";
+                var realquestion = "- none -";
                 var choices = question.querySelector("div.choices");
                 
+                alert(realquestion)
+                /*
                 function updatequestion(element){
                     // I need to add a better way to detect this
                     if (element && element.getAttribute("style").includes("background-image")) {
@@ -50,11 +52,7 @@ function loop(){
                             realquestion = question.children[0].innerText
                         }
                     }
-                    alert(realquestion)
                 }
-
-                updatequestion(null);
-                /*
                 function clickbtn(element) {
                     if (choices.getElementsByClassName("correct").length === 0) {
                         if (element.getAttribute("class") != "incorrect") {
