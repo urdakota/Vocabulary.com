@@ -71,7 +71,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`'%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`,'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -96,10 +96,10 @@ function loop() {
                                         updatequestion(element);
                                         if (element.getAttribute("style") && element.getAttribute("style").includes("background-image")) {
                                             learned[list][realquestion] = element.getAttribute("style");
-                                            console.log(`'%c learning ${realquestion} %c(${element.getAttribute("style")})`,'color: #FF0000','color: #bada55')
+                                            console.log(`%c learning ${realquestion} %c(${element.getAttribute("style")})`,'color: #FF0000','color: #bada55')
                                         } else {
                                             learned[list][realquestion] = element.innerText;
-                                            console.log(`'%c learning ${realquestion} %c(${element.innerText})`,'color: #FF0000','color: #bada55')
+                                            console.log(`%c learning ${realquestion} %c(${element.innerText})`,'color: #FF0000','color: #bada55')
                                         }
                                         localStorage.setItem("learned", JSON.stringify(learned));
                                     }
@@ -135,7 +135,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`'%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`,'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -150,7 +150,7 @@ function loop() {
                                     learned[list][realquestion] = element.innerText;
                                     
                                     // Debug
-                                    console.log(`'%c learning ${realquestion} %c(${element.innerText})`,'color: #FF0000','color: #bada55')
+                                    console.log(`%c learning ${realquestion} %c(${element.innerText})`,'color: #FF0000','color: #bada55')
                                     localStorage.setItem("learned", JSON.stringify(learned));
                                 }
                             }
@@ -171,7 +171,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`'%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`,'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -186,7 +186,7 @@ function loop() {
                                     learned[list][realquestion] = element.innerText;
                                     
                                     // Debug
-                                    console.log(`'%c learning ${realquestion} %c(${element.innerText})`,'color: #FF0000','color: #bada55')
+                                    console.log(`%c learning ${realquestion} %c(${element.innerText})`,'color: #FF0000','color: #bada55')
                                     localStorage.setItem("learned", JSON.stringify(learned));
                                 }
                             }
@@ -205,7 +205,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`'%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`,'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -220,7 +220,7 @@ function loop() {
                                     learned[list][realquestion] = element.getAttribute("style");
                                     
                                     // Debug
-                                    console.log(`'%c learning ${realquestion} %c(${element.getAttribute("style")})`,'color: #FF0000','color: #bada55')
+                                    console.log(`%c learning ${realquestion} %c(${element.getAttribute("style")})`,'color: #FF0000','color: #bada55')
                                     localStorage.setItem("learned", JSON.stringify(learned));
                                 }
                             }
