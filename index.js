@@ -4,8 +4,7 @@ const sleep = function(ms) {
 }
   
 let list = window.location.href.split("/")
-if (list[5].includes("practice")) {list = list[4]}
-if (list[3].includes("vocabtrainer")) {list = list[4]}
+list = list[4]
 
 var learned = {}
 if (localStorage.getItem("learned") !== null) {
@@ -78,7 +77,6 @@ function loop() {
                         equalitycheckdone = true;
                     }
 
-
                     (async () => {
                         equalitycheck();
                         do {
@@ -127,26 +125,36 @@ function loop() {
                     var realquestion = questionholder.querySelector("div.questionContent > div").innerText;
                     var choices = questionholder.querySelector("div.choices");
 
-                    // Check if known & click
-                    (async () => {
-                        for await (const element of choices.querySelectorAll("a")) {
+                    // Check if known
+                    var equalitycheckdone = false;
+                    async function equalitycheck1(){
+                        equalitycheckdone = false;
+                        for (const element of choices.querySelectorAll("a")) {
                             if (learned[list][realquestion] == element.innerText) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`, 'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
+                        equalitycheckdone = true;
+                    }
+
+                    (async () => {
+                        equalitycheck1();
+                        do {
+                            await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+                        } while (!equalitycheckdone)
                     })();
-                    
+
                     (async () => {
                         for await (const element of choices.querySelectorAll("a")) {
-                            if (choices.getElementsByClassName("correct").length == 0) {
+                            if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
-                                if (!document.body.contains(element)) {
+                                if (choices.getElementsByClassName("incorrect").length >= 0 && !document.body.contains(element)) {
                                     learned[list][realquestion] = element.innerText;
                                     
                                     // Debug
@@ -163,26 +171,37 @@ function loop() {
                     var realquestion = questionholder.querySelector("div.instructions").innerText;
                     var choices = questionholder.querySelector("div.choices");
 
-                    // Check if known & click
-                    (async () => {
-                        for await (const element of choices.querySelectorAll("a")) {
+                    
+                    // Check if known
+                    var equalitycheckdone = false;
+                    async function equalitycheck2() {
+                        equalitycheckdone = false;
+                        for (const element of choices.querySelectorAll("a")) {
                             if (learned[list][realquestion] == element.innerText) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`, 'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
+                        equalitycheckdone = true;
+                    }
+
+                    (async () => {
+                        equalitycheck2();
+                        do {
+                            await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+                        } while (!equalitycheckdone)
                     })();
                     
                     (async () => {
                         for await (const element of choices.querySelectorAll("a")) {
-                            if (choices.getElementsByClassName("correct").length == 0) {
+                            if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
-                                if (!document.body.contains(element)) {
+                                if (choices.getElementsByClassName("incorrect").length >= 0 && !document.body.contains(element)) {
                                     learned[list][realquestion] = element.innerText;
                                     
                                     // Debug
@@ -197,26 +216,36 @@ function loop() {
                     var realquestion = questionholder.querySelector("div.box-word > div").innerText;
                     var choices = questionholder.querySelector("div.choices");
 
-                    // Check if known & click
-                    (async () => {
-                        for await (const element of choices.querySelectorAll("a")) {
+                    // Check if known
+                    var equalitycheckdone = false;
+                    async function equalitycheck3() {
+                        equalitycheckdone = false;
+                        for (const element of choices.querySelectorAll("a")) {
                             if (learned[list][realquestion] == element.getAttribute("style")) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
-                                console.log(`%c completed ${realquestion}`,'color: #bada55')
+                                console.log(`%c completed ${realquestion}`, 'color: #bada55')
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
+                        equalitycheckdone = true;
+                    }
+
+                    (async () => {
+                        equalitycheck3();
+                        do {
+                            await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+                        } while (!equalitycheckdone)
                     })();
                     
                     (async () => {
                         for await (const element of choices.querySelectorAll("a")) {
-                            if (choices.getElementsByClassName("correct").length == 0) {
+                            if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
-                                if (!document.body.contains(element)) {
+                                if (choices.getElementsByClassName("incorrect").length >= 0 && !document.body.contains(element)) {
                                     learned[list][realquestion] = element.getAttribute("style");
                                     
                                     // Debug
@@ -242,7 +271,7 @@ async function main() {
     await new Promise((resolve, reject) => setTimeout(resolve, delay));
     await loop();
 
-    if (window.location.href.split("/")[5].includes("practice")) {
+    if (window.location.href.includes("practice")) {
         var nextbtn = document.querySelector("#challenge > div > div:nth-child(2) > button");
 
         do {
