@@ -4,7 +4,7 @@ const sleep = function(ms) {
 }
   
 let list = window.location.href.split("/")
-if (list[4].includes("/practice")) {list = list[4].split("/practice")[0]}
+if (list[5].includes("practice")) {list = list[4]}
 if (list[3].includes("vocabtrainer")) {list = list[4]}
 
 var learned = {}
@@ -219,7 +219,7 @@ async function main() {
     await new Promise((resolve, reject) => setTimeout(resolve, delay));
     await loop();
 
-    if (window.location.href.split("/")[4].includes("/practice")) {
+    if (window.location.href.split("/")[5].includes("practice")) {
         var nextbtn = document.querySelector("#challenge > div > div:nth-child(2) > button");
 
         do {
