@@ -54,19 +54,39 @@ function loop() {
                         }
                     }
 
-                    (async () => {
-                        // Check if known
-                        for await (const element of choices.querySelectorAll("a")) {
+                    // Check if known
+                    var equalitycheckdone = false;
+                    async function equalitycheck(){
+                        equalitycheckdone = false;
+                        for (const element of choices.querySelectorAll("a")) {
+                            var equalto;
                             updatequestion(element);
-                            if (learned[list][realquestion]) {
+                            if (element.getAttribute("style") && element.getAttribute("style").includes("background-image")) {
+                                equalto = element.getAttribute("style");
+                            } else {
+                                equalto = element.innerText;
+                            }
+                            if (learned[list][realquestion] == equalto) {
                                 element.click();
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
+                                console.log(`📙: deleted ${realquestion};`)
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
+                        equalitycheckdone = true;
+                    }
 
+
+                    (async () => {
+                        equalitycheck();
+                        do {
+                            await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+                        } while (!equalitycheckdone)
+                    })();
+
+                    (async () => {
                         for await (const element of choices.querySelectorAll("a")) {
                             if (choices.getElementsByClassName("correct").length == 0) {
                                 element.click();
@@ -76,10 +96,10 @@ function loop() {
                                         updatequestion(element);
                                         if (element.getAttribute("style") && element.getAttribute("style").includes("background-image")) {
                                             learned[list][realquestion] = element.getAttribute("style");
-                                            console.log(`learned[${list}][${realquestion}] = ${element.getAttribute("style")};`)
+                                            console.log(`📗: learned[${list}][${realquestion}] = ${element.getAttribute("style")};`)
                                         } else {
                                             learned[list][realquestion] = element.innerText;
-                                            console.log(`learned[${list}][${realquestion}] = ${element.innerText};`)
+                                            console.log(`📗: learned[${list}][${realquestion}] = ${element.innerText};`)
                                         }
                                         localStorage.setItem("learned", JSON.stringify(learned));
                                     }
@@ -115,6 +135,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
+                                console.log(`📙: deleted ${realquestion};`)
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -129,7 +150,7 @@ function loop() {
                                     learned[list][realquestion] = element.innerText;
                                     
                                     // Debug
-                                    console.log(`learned[${list}][${realquestion}] = ${element.innerText};`)
+                                    console.log(`📗: learned[${list}][${realquestion}] = ${element.innerText};`)
                                     localStorage.setItem("learned", JSON.stringify(learned));
                                 }
                             }
@@ -150,6 +171,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
+                                console.log(`📙: deleted ${realquestion};`)
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -164,7 +186,7 @@ function loop() {
                                     learned[list][realquestion] = element.innerText;
                                     
                                     // Debug
-                                    console.log(`learned[${list}][${realquestion}] = ${element.innerText};`)
+                                    console.log(`📗: learned[${list}][${realquestion}] = ${element.innerText};`)
                                     localStorage.setItem("learned", JSON.stringify(learned));
                                 }
                             }
@@ -183,6 +205,7 @@ function loop() {
                                 await new Promise((resolve, reject) => setTimeout(resolve, delay));
                                 // Delete question from learned table
                                 delete learned[list][realquestion];
+                                console.log(`📙: deleted ${realquestion};`)
                                 localStorage.setItem("learned", JSON.stringify(learned))
                             }
                         }
@@ -197,7 +220,7 @@ function loop() {
                                     learned[list][realquestion] = element.getAttribute("style");
                                     
                                     // Debug
-                                    console.log(`learned[${list}][${realquestion}] = ${element.getAttribute("style")};`)
+                                    console.log(`📗: learned[${list}][${realquestion}] = ${element.getAttribute("style")};`)
                                     localStorage.setItem("learned", JSON.stringify(learned));
                                 }
                             }
