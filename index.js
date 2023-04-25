@@ -137,6 +137,7 @@ function loop() {
                     })();
                     break;
                 case "type-s": // continues do type-d
+                case "type-a":
                 case "type-d":
                     var realquestion = questionholder.querySelector("div.instructions").innerText;
                     var choices = questionholder.querySelector("div.choices");
