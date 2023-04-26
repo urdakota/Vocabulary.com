@@ -127,8 +127,6 @@ function loop() {
 // Main loop
 async function main() {
     var nextbtn = document.querySelector("#challenge > div > div:nth-child(2) > button");
-
-    await new Promise((resolve, reject) => setTimeout(resolve, delay));
     await loop();
 
     do {
@@ -137,9 +135,10 @@ async function main() {
 
     // Restart
     do {
-        await new Promise((resolve, reject) => setTimeout(resolve, delay));
+        await new Promise((resolve, reject) => setTimeout(resolve, 1000));
         nextbtn.click();
     } while (nextbtn.getAttribute("class") == "next active")
+    await new Promise((resolve, reject) => setTimeout(resolve, delay));
 
     main();
 }
