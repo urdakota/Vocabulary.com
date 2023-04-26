@@ -130,12 +130,12 @@ async function main() {
     await loop();
 
     do {
-        await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+        await new Promise((resolve, reject) => setTimeout(resolve, 250));
     } while (nextbtn.getAttribute("class") != "next active")
 
     // Restart
     do {
-        await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+        await new Promise((resolve, reject) => setTimeout(resolve, 250));
         nextbtn.click();
     } while (nextbtn.getAttribute("class") == "next active")
     await new Promise((resolve, reject) => setTimeout(resolve, delay));
