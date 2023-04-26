@@ -81,8 +81,8 @@ function loop() {
                                 answer = element.innerText;
                             }
                             if (learned[list][questionproperty][realquestion] == answer) {
-                                element.click();
                                 await sleep(delay);
+                                element.click();
                                 console.log(`%c completed ${realquestion}`, 'color: #bada55')
                             }
                         }
@@ -95,13 +95,11 @@ function loop() {
                     do {
                         await sleep(delay);
                     } while (!equalitycheckdone)
-                })();
-
-                (async () => {
+                    
                     for await (const element of questions) {
                         if (choices.getElementsByClassName("correct").length == 0) {
-                            element.click();
                             await sleep(delay);
+                            element.click();
                             if (element.getAttribute("class") == "correct") {
                                 if (element.getAttribute("style") && element.getAttribute("style").includes("background-image")) {
                                     answer = element.getAttribute("style");
@@ -130,15 +128,14 @@ async function main() {
     await loop();
 
     do {
-        await new Promise((resolve, reject) => setTimeout(resolve, 250));
+        await sleep(250);
     } while (nextbtn.getAttribute("class") != "next active")
 
     // Restart
     do {
-        await new Promise((resolve, reject) => setTimeout(resolve, 250));
+        await sleep(250);
         nextbtn.click();
     } while (nextbtn.getAttribute("class") == "next active")
-    await new Promise((resolve, reject) => setTimeout(resolve, delay));
 
     main();
 }
