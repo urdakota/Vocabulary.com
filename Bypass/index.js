@@ -25,6 +25,19 @@ const define = async function (list) {
     return fin;
 }
 
+const choicefunc = async function(answers, callback = function(a){a.click()}){
+    var clickedon = 0;
+    for (const choice of answers){
+        if (!answers.querySelector("a.correct")){
+            callback(choice)
+            // wait for it to be correct / incorrect
+            do { await sleep(100); } while (choice.getAttribute("class").includes("correct"))
+            clickedon++;
+        }
+    }
+    // example: choicefunc(choices.querySelectorAll("a"), function(a){ if(answer == a.innerText){ a.click } })
+}
+
 /* Actual Bot */
 async function main() {
     //await 
