@@ -202,6 +202,25 @@ async function main() {
                         } while (equalitycheckdone < 4 || choices.querySelector("a.correct"))
                     })();
     
+                    
+                    // Check if word is defined in vocab list
+                    var definedcheckdone = 0;
+                    (async () => {
+                        for (const element of choices.querySelectorAll("a")) {
+                            if (listdefinitions[element.innerText] == realquestion) {
+                                element.click();
+                                await sleep(250);
+
+                                // Debug
+                                console.log(`%c completed ${realquestion}`, 'color: #bada55')
+                            }
+                            definedcheckdone++;
+                        }
+                        do {
+                            await sleep(1000);
+                        } while (definedcheckdone < 4 || choices.querySelector("a.correct"))
+                    })();
+
                     (async () => {
                         for await (const element of choices.querySelectorAll("a")) {
                             if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
