@@ -117,6 +117,20 @@ async function main() {
                                 }
                             })
 
+                            // Guess
+                            await choicefunc(choice_list, async function(choice){ 
+                                if(document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0){
+                                    choice.click();
+                                    await waitforresult(choice);
+                                    if (choices.getElementsByClassName("incorrect").length > 0 && !choice.className.includes("incorrect") && choice.className.includes("correct")) {
+                                        learned[list][realquestion] = element.innerText;
+                                        localStorage.setItem("learned", JSON.stringify(learned));
+                                        
+                                        if(debug) console.log(`%c learning ${realquestion} %c(${element.innerText})`, 'color: #FF0000', 'color: #bada55')
+                                    }
+                                }
+                            })
+
                             /*
                             var equalitycheckdone = 0;
                             (async () => {
@@ -155,7 +169,6 @@ async function main() {
                                 } while (definedcheckdone < 4 || choices.querySelector("a.correct"))
                             })();
                             
-                            */
                             // Guess
                             (async () => {
                                 for await (const element of choices.querySelectorAll("a")) {
@@ -172,6 +185,7 @@ async function main() {
                                     }
                                 }
                             })();
+                            */
                         }
                     } else {
                         if (question.getAttribute("style") && question.getAttribute("style").includes("background-image")) {
