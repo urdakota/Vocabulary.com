@@ -25,19 +25,15 @@ const define = async function (list) {
     return fin;
 }
 
-async function choices() {
-    
-}
-
 /* Actual Bot */
 async function main() {
     //await 
     var mastery = !!document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer");
     if (mastery) {
         var list = document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer").getAttribute("data-wordlistid");
-        if (!learned[list]) {
-            learned[list] = {};
-        }
+        if (!learned[list]) learned[list] = {};
+        var listdefinitions = define(list);
+
         var trainer = document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer > main");
         var box = trainer.querySelector("ul > li > div > div.box-question");
         if (box) {
@@ -87,6 +83,8 @@ async function main() {
                             })();
                         } else {
                             realquestion = realquestion.innerText;
+
+                            // Check if already learned
                             var equalitycheckdone = 0;
                             (async () => {
                                 for (const element of choices.querySelectorAll("a")) {
@@ -105,7 +103,26 @@ async function main() {
                                     await sleep(1000);
                                 } while (equalitycheckdone < 4 || choices.querySelector("a.correct"))
                             })();
+
+                            // Check if word is defined in vocab list
+                            var definedcheckdone = 0;
+                            (async () => {
+                                for (const element of choices.querySelectorAll("a")) {
+                                    if (listdefinitions[element.innerText] == realquestion) {
+                                        element.click();
+                                        await sleep(250);
     
+                                        // Debug
+                                        console.log(`%c completed ${realquestion}`, 'color: #bada55')
+                                    }
+                                    definedcheckdone++;
+                                }
+                                do {
+                                    await sleep(1000);
+                                } while (definedcheckdone < 4 || choices.querySelector("a.correct"))
+                            })();
+    
+                            // Guess
                             (async () => {
                                 for await (const element of choices.querySelectorAll("a")) {
                                     if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
