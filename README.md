@@ -3,15 +3,14 @@ Automatic Vocabulary.com mastery bookmarklet \
 Automatically answers questions (auto answer) \
 I made this because im too lazy to do my vocab 🤑
 ## WARNING
-> *This can get your account **RESTRICTED** or **BANNED** if you set the delay too small* \
-> use **1500 MS** *1.5 seconds* or more in delay 👿
+> *This code can get your account restricted
 
 ![](auto.gif)
 
 ## HOW TO RUN
 Make a new bookmark with this as the link & click it on your vocabulary.com practice
 ```JS
-javascript:  fetch("https://raw.githubusercontent.com/urdakota/Vocabulary.com/main/index.js").then((res) => res.text().then((t) => eval(t)))
+javascript:  fetch("https://raw.githubusercontent.com/urdakota/Vocabulary.com/main/Bypass/index.js").then((res) => res.text().then((t) => eval(t)))
 ```
 
 ## What it does 🤔
