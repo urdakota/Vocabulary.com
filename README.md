@@ -7,7 +7,7 @@ I made this because im too lazy to do my vocab 🤑
 
 ## IMPORTANT
 > My school disabled javascript from running so this will not be updated from now on!
-> If you're wondering if your javascript is disabled copy this and paste in the url:
+> If you're wondering if your javascript is disabled copy this and paste in the url (Make sure "javascript:" is in the front)
 ```JS
 javascript: alert("Javascript is enabled");
 ```
