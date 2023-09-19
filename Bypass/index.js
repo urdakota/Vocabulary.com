@@ -25,10 +25,10 @@ const define = async function (list) {
     });
     return fin;
 }
-const waitforresult = async function(choice){ do {await sleep(100)} while (!choice.getAttribute("class").includes("correct"))}
+const waitforresult = async function(choice){ do {await sleep(100)} while (!choice.className.includes("correct"))}
 const iscorrect =     async function(choice){ return (!choice.className.includes("incorrect") && choice.className.includes("correct"))}
 const choicefunc =    async function(answers, callback = async function(a){a.click()}){
-    for (const choice of answers){
+    for (const choice of answers.querySelectorAll("a")){
         if (!answers.querySelector("a.correct")) await callback(choice);
     }
     // example: choicefunc(choices.querySelectorAll("a"), function(a){ if(answer == a.innerText){ a.click } })
@@ -40,167 +40,102 @@ async function main() {
     var mastery = !!document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer");
     if (mastery) {
         var list = document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer").getAttribute("data-wordlistid");
-        if (!learned[list]) learned[list] = {};
-        var listdefinitions = define(list);
-
+        var listdefinitions = {};
+        if (list && !learned[list]){
+            learned[list] = {};
+            listdefinitions = define(list);
+        }
+        // style="background-image: url(&quot;https://cdn.vocab.com/questions/800/5ac271b161c391188405e198.jpg?w=400&quot;);"
         var trainer = document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer > main");
         var box = trainer.querySelector("ul > li > div > div.box-question");
-        if (box) {
+        if (!!box) {
             var choices = box.querySelector("div.choices");
-            if (choices) {
-                var question = box.querySelector("div.questionContent");
+            if (!!choices) {
+                var questionContent = box.querySelector("div.questionContent");  
                 var instructions = box.querySelector("div.instructions");
-                var boxword = box.querySelector("div.box-word > div");
-                if (question) {
-                    var realquestion = question.querySelector("div");
-                    if (realquestion) {
-                        if (realquestion.getAttribute("style") && realquestion.getAttribute("style").includes("background-image")) {
-                            realquestion = realquestion.getAttribute("style");
-                            var equalitycheckdone = 0;
-                            (async () => {
-                                for (const element of choices.querySelectorAll("a")) {
-                                    if (learned[list][realquestion] == element.innerText) {
-                                        element.click();
-                                        await sleep(750);
-                                        delete learned[list][realquestion];
-                                        localStorage.setItem("learned", JSON.stringify(learned))
-    
-                                        // Debug
-                                        console.log(`%c completed ${realquestion}`, 'color: #bada55')
-                                    }
-                                    equalitycheckdone++;
-                                }
-                                do {
-                                    await sleep(1000);
-                                } while (equalitycheckdone < 4 || choices.querySelector("a.correct"))
-                            })();
-    
-                            (async () => {
-                                for await (const element of choices.querySelectorAll("a")) {
-                                    if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
-                                        element.click();
-                                        await sleep(750);
-                                        if (choices.getElementsByClassName("incorrect").length >= 0 && !document.body.contains(element)) {
-                                            learned[list][realquestion] = element.innerText;
-                                            localStorage.setItem("learned", JSON.stringify(learned));
-                                            
-                                            // Debug
-                                            console.log(`%c learning ${realquestion} %c(${element.innerText})`, 'color: #FF0000', 'color: #bada55')
-                                        }
-                                    }
-                                }
-                            })();
-                        } else {
-                            realquestion = realquestion.innerText;
-                            var choice_list = choices.querySelectorAll("a")
+                var boxword = box.querySelector("div.box-word > div");    // I've never seen this im not joking
+                if (!!questionContent) {
+                    if (questionContent.querySelector("div")) {
+                        var questionHolder= questionContent.querySelector("div");
+                        var questionStyle = questionHolder.getAttribute("style");
+                        var imageQuestion = questionStyle && questionStyle.includes("background-image");
+
+                        // Non image cause its more readable trust me
+                        if(!imageQuestion){
+                            var questionText = question.querySelector("div").innerText;
 
                             // Check if already learned
-                            await choicefunc(choice_list, async function(choice){ 
-                                if(learned[list][realquestion] == choice.innerText){
+                            await choicefunc(choices, async function(choice){ 
+                                if(learned[list][questionText] == choice.innerText){
                                     choice.click();
                                     await waitforresult(choice);
 
-                                    delete learned[list][realquestion];
+                                    delete learned[list][questionText];
                                     localStorage.setItem("learned", JSON.stringify(learned))
 
-                                    if(debug) console.log(`%c completed ${realquestion}`, 'color: #bada55')
+                                    if(debug) console.log(`%c[${list}]%c (${choice.innerText})%c ${questionText}`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');
                                 }
                             })
                             
                             // Check if word is defined in vocab list
-                            await choicefunc(choice_list, async function(choice){ 
-                                if(listdefinitions[element.innerText] == realquestion){
+                            await choicefunc(choices, async function(choice){ 
+                                if(questionText.contains(listdefinitions[choice.innerText])){
                                     choice.click();
                                     await waitforresult(choice);
 
-                                    if(debug) console.log(`%c completed ${realquestion}`, 'color: #bada55')
+                                    if(debug) console.log(`%c[${list}]%c (${choice.innerText})%c ${questionText}`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');
                                 }
                             })
 
                             // Guess
-                            await choicefunc(choice_list, async function(choice){ 
-                                if(document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0){
+                            await choicefunc(choices, async function(choice){ 
+                                choice.click();
+                                await waitforresult(choice);
+                                if (choice.className.contains("incorrect")){ await sleep(750) } else {
+                                    learned[list][questionText] = choice.innerText;
+                                    localStorage.setItem("learned", JSON.stringify(learned));
+                                }
+                            })
+                        } else {
+                            var image = questionHolder.style.backgroundImage;
+
+                            // Check if already learned
+                            await choicefunc(choices, async function(choice){ 
+                                if(learned[list][image] == choice.innerText){
                                     choice.click();
                                     await waitforresult(choice);
-                                    if (choices.getElementsByClassName("incorrect").length > 0 && !choice.className.includes("incorrect") && choice.className.includes("correct")) {
-                                        learned[list][realquestion] = element.innerText;
-                                        localStorage.setItem("learned", JSON.stringify(learned));
-                                        
-                                        if(debug) console.log(`%c learning ${realquestion} %c(${element.innerText})`, 'color: #FF0000', 'color: #bada55')
-                                    }
+
+                                    delete learned[list][image];
+                                    localStorage.setItem("learned", JSON.stringify(learned))
+
+                                    if(debug) console.log(`%c[${list}]%c (${choice.innerText})%c`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');
                                 }
                             })
 
-                            /*
-                            var equalitycheckdone = 0;
-                            (async () => {
-                                for (const element of choices.querySelectorAll("a")) {
-                                    if (learned[list][realquestion] == element.innerText) {
-                                        element.click();
-                                        await sleep(250);
-                                        delete learned[list][realquestion];
-                                        localStorage.setItem("learned", JSON.stringify(learned))
-    
-                                        // Debug
-                                        console.log(`%c completed ${realquestion}`, 'color: #bada55')
-                                    }
-                                    equalitycheckdone++;
-                                }
-                                do {
-                                    await sleep(1000);
-                                } while (equalitycheckdone < 4 || choices.querySelector("a.correct"))
-                            })();
-
-                            // Check if word is defined in vocab list
-                            var definedcheckdone = 0;
-                            (async () => {
-                                for (const element of choices.querySelectorAll("a")) {
-                                    if (listdefinitions[element.innerText] == realquestion) {
-                                        element.click();
-                                        await sleep(250);
-    
-                                        // Debug
-                                        console.log(`%c completed ${realquestion}`, 'color: #bada55')
-                                    }
-                                    definedcheckdone++;
-                                }
-                                do {
-                                    await sleep(1000);
-                                } while (definedcheckdone < 4 || choices.querySelector("a.correct"))
-                            })();
-                            
                             // Guess
-                            (async () => {
-                                for await (const element of choices.querySelectorAll("a")) {
-                                    if (document.body.contains(choices) && choices.getElementsByClassName("correct").length == 0) {
-                                        element.click();
-                                        await sleep(750);
-                                        if (choices.getElementsByClassName("incorrect").length > 0 && !element.className.includes("incorrect") && element.className.includes("correct")) {
-                                            learned[list][realquestion] = element.innerText;
-                                            localStorage.setItem("learned", JSON.stringify(learned));
-                                            
-                                            // Debug
-                                            console.log(`%c learning ${realquestion} %c(${element.innerText})`, 'color: #FF0000', 'color: #bada55')
-                                        }
-                                    }
+                            await choicefunc(choices, async function(choice){ 
+                                choice.click();
+                                await waitforresult(choice);
+                                if (choice.className.contains("incorrect")){ await sleep(750) } else {
+                                    learned[list][image] = choice.innerText;
+                                    localStorage.setItem("learned", JSON.stringify(learned));
                                 }
-                            })();
-                            */
+                            })
                         }
                     } else {
-                        if (question.getAttribute("style") && question.getAttribute("style").includes("background-image")) {
-                            realquestion = question.getAttribute("style");
+                        if (questionContent.getAttribute("style") && questionContent.getAttribute("style").includes("background-image")) {
+                            var realquestion = questionContent.getAttribute("style");
                             var equalitycheckdone = 0;
                             (async () => {
                                 for (const element of choices.querySelectorAll("a")) {
-                                    if (learned[list][realquestion] == element.innerText) {
+                                    if (learned[list][questionHolder] == element.innerText) {
                                         element.click();
                                         await sleep(750);
-                                        delete learned[list][realquestion];
+                                        delete learned[list][questionHolder];
                                         localStorage.setItem("learned", JSON.stringify(learned))
     
                                         // Debug
-                                        console.log(`%c completed ${realquestion}`, 'color: #bada55')
+                                        console.log(`%c completed ${questionHolder}`, 'color: #bada55')
                                     }
                                     equalitycheckdone++;
                                 }
@@ -215,11 +150,11 @@ async function main() {
                                         element.click();
                                         await sleep(750);
                                         if (choices.getElementsByClassName("incorrect").length > 0 && !element.className.includes("incorrect") && element.className.includes("correct")) {
-                                            learned[list][realquestion] = element.innerText;
+                                            learned[list][questionHolder] = element.innerText;
                                             localStorage.setItem("learned", JSON.stringify(learned));
                                             
                                             // Debug
-                                            console.log(`%c learning ${realquestion} %c(${element.innerText})`, 'color: #FF0000', 'color: #bada55')
+                                            console.log(`%c learning ${questionHolder} %c(${element.innerText})`, 'color: #FF0000', 'color: #bada55')
                                         }
                                     }
                                 }
@@ -305,9 +240,9 @@ async function main() {
                         console.log(`%c completed ${realquestion}`, 'color: #bada55')
                     } else {
                         for( let i=3; i--; ){
-                            form.querySelector("div.field.left > input").value = "guess";
+                            form.querySelector("div.field.left > input").value = `guess ${i}`;
                             form.querySelector("div.field.right > button.spellit.ss-write.left").click();
-                            await sleep(2500);
+                            await sleep(750);
                         }
                         (async () => {
                             form.querySelector("div.field.right > button.surrender.ss-flag.left").click();
