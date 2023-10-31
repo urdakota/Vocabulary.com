@@ -20,6 +20,7 @@ const choicefunc =    async function(answers, callback = async function(a){a.cli
 
 const define = async function (list) {
     var fin = {}
+    if (list=="undefined") return {};
     fetch(`https://www.vocabulary.com/lists/${list}`).then(function (response) {
 	    return response.text();
     }).then(function (html) {
@@ -43,6 +44,9 @@ async function main() {
     if (!!mastery) {
         var list = mastery.getAttribute("data-wordlistid");
         var listdefinitions = {};
+        if (list == undefined){
+            list = "undefined";
+        }
         if (list && !learned[list]){
             learned[list] = {};
             listdefinitions = define(list);
