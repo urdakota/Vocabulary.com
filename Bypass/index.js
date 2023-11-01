@@ -44,9 +44,7 @@ async function main() {
     if (!!mastery) {
         var list = mastery.getAttribute("data-wordlistid");
         var listdefinitions = {};
-        if (list == undefined){
-            list = "undefined";
-        }
+        if (list == undefined) list = "undefined";
         if (list && !learned[list]){
             learned[list] = {};
             listdefinitions = define(list);
@@ -58,7 +56,9 @@ async function main() {
             var choices = select("div.choices", box);
             var spelltheword = select("div.spelltheword", box);
             if (!!choices) {
+                var questionHolder;
                 var questionContent = select("div.questionContent", box);
+                if (!!questionContent) questionHolder = select("div", questionContent);
                 var instructions = select("div.instructions", box);
                 var boxword = select("div.box-word", box);
                 if (!!boxword) {
@@ -90,8 +90,46 @@ async function main() {
                     })
                 }
 
-                if (!!questionContent) {
-                    var questionHolder = select("div", questionContent);
+                if (instructions) {
+                    var questionText = instructions.innerText;
+
+                    // Check if already learned
+                    await choicefunc(choices, async function(choice){ 
+                        if(learned[list][questionText] == choice.innerText){
+                            choice.click();
+                            await waitforresult(choice);
+
+                            delete learned[list][questionText];
+                            localStorage.setItem("learned", JSON.stringify(learned))
+
+                            console.log(`%c completed ${questionText}`, 'color: #bada55');
+                        }
+                    })
+                    
+                    // Check if word is in vocab list
+                    await choicefunc(choices, async function(choice){ 
+                        if(questionText.includes(listdefinitions[choice.innerText])){
+                            choice.click();
+                            await waitforresult(choice);
+
+                            console.log(`%c completed ${questionText}`, 'color: #bada55');
+                        }
+                    })
+
+                    // Guess
+                    await choicefunc(choices, async function(choice){ 
+                        choice.click();
+                        await waitforresult(choice);
+                        if (choice.className.includes("incorrect")){ await wait(.75) } else {
+                            learned[list][questionText] = choice.innerText;
+                            localStorage.setItem("learned", JSON.stringify(learned));
+                            
+                            console.log(`%c learning %c[${questionText}]%c (${choice.innerText})`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');
+                        }
+                    })
+                }
+
+                if (!!questionContent && !!questionHolder) {
 
                     var questionStyle = questionContent.getAttribute("style");
                     var questionHolderStyle = questionHolder.getAttribute("style");
@@ -235,44 +273,7 @@ async function main() {
                         }
                     
                     }
-                } else if (instructions) {
-                    var questionText = instructions.innerText;
-
-                    // Check if already learned
-                    await choicefunc(choices, async function(choice){ 
-                        if(learned[list][questionText] == choice.innerText){
-                            choice.click();
-                            await waitforresult(choice);
-
-                            delete learned[list][questionText];
-                            localStorage.setItem("learned", JSON.stringify(learned))
-
-                            console.log(`%c completed ${questionText}`, 'color: #bada55');
-                        }
-                    })
-                    
-                    // Check if word is in vocab list
-                    await choicefunc(choices, async function(choice){ 
-                        if(questionText.includes(listdefinitions[choice.innerText])){
-                            choice.click();
-                            await waitforresult(choice);
-
-                            console.log(`%c completed ${questionText}`, 'color: #bada55');
-                        }
-                    })
-
-                    // Guess
-                    await choicefunc(choices, async function(choice){ 
-                        choice.click();
-                        await waitforresult(choice);
-                        if (choice.className.includes("incorrect")){ await wait(.75) } else {
-                            learned[list][questionText] = choice.innerText;
-                            localStorage.setItem("learned", JSON.stringify(learned));
-                            
-                            console.log(`%c learning %c[${questionText}]%c (${choice.innerText})`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');
-                        }
-                    })
-                }
+                } 
             }
             else if (!!spelltheword) {
                 var question = select("div.questionContent", box);
@@ -305,7 +306,7 @@ async function main() {
                             giveup.click();
                             await wait(1);
                             // finds answer on screen appearing on right
-                            learned[list][realquestion] = trainer.querySelector("ul > li > div.box-explain-then-next > div.box-word-audio-add-list > a").innerText;
+                            learned[list][realquestion] = select("ul > li > div.box-explain-then-next > div.box-word-audio-add-list > a", trainer).innerText;
                             
                             localStorage.setItem("learned", JSON.stringify(learned));
                             console.log(`%c learning %c[${realquestion}]%c (${learned[list][realquestion]})`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');      
@@ -315,25 +316,92 @@ async function main() {
             }
         }
     } else if(!!practice){
-        
+        var list = select("#challenge").getAttribute("data-wordlistid");
+        var listdefinitions = {};
+        if (list == undefined) list = "undefined";
+        if (list && !learned[list]){
+            learned[list] = {};
+            listdefinitions = define(list);
+        }
+
+        var currentscreen = practice.children[(practice.children.length) - 1];
+        var questionHolder = select("div > section.left > div.question", currentscreen);
+
+        if (!!questionHolder) {
+            var questionContent = select("div.questionContent", questionHolder);
+            var instructions = select("div.instructions", questionHolder);
+            var choices = select("div.choices", questionHolder);
+
+            var questionSentence = (!!questionContent) && select("div.sentence", questionContent);
+
+            if (!!choices) {
+                var question = (!!questionSentence) && questionSentence.innerText || instructions.innerText;
+                question = question.replace(/(\r\n|\n|\r)/gm, " ");
+                
+                // Check if already learned
+                await choicefunc(choices, async function(choice){ 
+                    var answer = (choice.style.backgroundImage == "" && choice.innerText) || choice.style.backgroundImage;
+                    if(learned[list][question] == answer){
+                        choice.click();
+                        await waitforresult(choice);
+
+                        delete learned[list][question];
+                        localStorage.setItem("learned", JSON.stringify(learned))
+
+                        console.log(`%c completed ${question}`, 'color: #bada55');
+                    }
+                })
+
+                // Check if word is in vocab list
+                await choicefunc(choices, async function(choice){ 
+                    if(question.includes(listdefinitions[choice.innerText])){
+                        choice.click();
+                        await waitforresult(choice);
+
+                        console.log(`%c completed ${questionText}`, 'color: #bada55');
+                    }
+                })
+
+                // Guess
+                await choicefunc(choices, async function(choice){ 
+                    choice.click();
+                    await waitforresult(choice);
+                    if (choice.className.includes("incorrect")) { await wait(.75) } else {
+                        var answer = (choice.style.backgroundImage == "" && choice.innerText) || choice.style.backgroundImage;
+                        learned[list][question] = answer;
+                        localStorage.setItem("learned", JSON.stringify(learned));
+
+                        console.log(`%c learning %c[${question}]%c (${answer})`, 'color: #ADD8E6', 'color: #FF0000', 'color: #bada55');
+                    }
+                })
+
+            } else if(!!questionSentence){
+                var word = select("div.sentence.complete", questionContent).getElementsByTagName("strong")[0].innerText;
+                select("div.spelltheword > div.field.left > input", questionHolder).value = word;
+                select("div.spelltheword > div.field.right > button.spellit.ss-write.left", questionHolder).click();
+            } else {
+                alert("wat is this?");
+            }
+        }
     } else {
         alert("Couldn\'t detect mode!");
     }
 
-    //define("891399").then(function (words) {
-    //    console.log(words);
-    //});
-
     do {
         await wait(1);
-        nextbtn = document.querySelector("#id-vocab-trainer > div.wrapper-main-trainer > main > div > button");
+        if (!!mastery) nextbtn = select("#id-vocab-trainer > div.wrapper-main-trainer > main > div > button");
+        if (!!practice) {
+            nextbtn = select("#challenge > div > div:nth-child(2) > button");
+        }
     } while (!nextbtn)
 
     // Restart
     do {
-        nextbtn.click();
+        if (!practice) { nextbtn.click() } else {
+            if (nextbtn.getAttribute("class") == "next active") nextbtn.click()
+        }
         await wait(1.5);
-    } while (document.body.contains(nextbtn))
+    } while (document.body.contains(nextbtn) && (!practice) || (nextbtn.getAttribute("class") == "next active"))
 
     main();
 }
